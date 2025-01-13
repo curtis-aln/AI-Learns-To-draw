@@ -4,30 +4,24 @@
 
 #include <array>
 #include <vector>
+#include <SFML/Graphics.hpp>
 
-struct Vector2f
+struct PixelMap
 {
-	float x;
-	float y;
+	static const size_t resolution_x = 800;
+	static const size_t resolution_y = 800;
 };
 
-struct Color
-{
-	int r;
-	int g;
-	int b;
-	int a;
-};
-
-struct Vertex
-{
-	Vector2f position;
-	Color color;
-};
 
 struct Triangle
 {
-	std::array<Vertex, 3> vertices;
+	sf::VertexArray vertex_array;
+	
+	Triangle()
+	{
+		vertex_array.setPrimitiveType(sf::Triangles);
+		vertex_array.resize(3);
+	}
 };
 
 class Canvas
@@ -87,10 +81,12 @@ private:
 	{
 		// assume canvas space is (0, 0, 1, 1) (x, y, w, h)
 		Triangle triangle;
-		for (Vertex& vertex : triangle.vertices)
+		for (int i = 0; i < 3; ++i)
 		{
-			vertex.position = Vector2f{ Random::rand01_float(), Random::rand01_float() };
-			vertex.color = Color{ Random::rand_range(0, 255), Random::rand_range(0, 255), Random::rand_range(0, 255), Random::rand_range(0, 255) };
+
+			sf::FloatRect rect = { 0.f, 0.f, float(PixelMap::resolution_x), float(PixelMap::resolution_y) };
+			triangle.vertex_array[i].position = Random::rand_pos_in_rect(rect);
+			triangle.vertex_array[i].color = Random::rand_color();
 		}
 		return triangle;
 	}

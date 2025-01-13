@@ -42,7 +42,8 @@ namespace Random
         return {
             static_cast<sf::Uint8>(rand_range(rgb_min.x, rgb_max.x)), // red value
             static_cast<sf::Uint8>(rand_range(rgb_min.y, rgb_max.y)), // green value
-            static_cast<sf::Uint8>(rand_range(rgb_min.z, rgb_max.z))  // blue value
+            static_cast<sf::Uint8>(rand_range(rgb_min.z, rgb_max.z)),  // blue value
+            static_cast<sf::Uint8>(rand_range(0, 255))  // blue value
         };
     }
 
