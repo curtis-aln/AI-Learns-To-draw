@@ -54,7 +54,7 @@ public:
 		{
 			if (Random::rand01_float() < mutation_rate)
 			{
-				mutate_triangle(triangle);
+				mutate_triangle(triangle, mutation_range);
 			}
 		}
 
@@ -72,9 +72,27 @@ public:
 
 
 private:
-	void mutate_triangle(Triangle& triangle)
+	void mutate_triangle(Triangle& triangle, const float mutation_range)
 	{
 		// possible mutations: offset a vertex, modify the color of the triangle
+		const int vertex_idx = Random::rand_range(0, 3);
+		const int pos_or_col = Random::rand01_int(); // 0 == position, 1 == color
+
+		sf::Vertex& vertex = triangle.vertex_array[vertex_idx];
+		
+		if (pos_or_col == 0)
+		{
+			vertex.position += Random::rand_vector(-40 * mutation_range, 40 * mutation_range);
+		}
+
+		else if (pos_or_col)
+		{
+			const float dt = 40;
+			vertex.color.r += Random::rand_range(-dt, dt);
+			vertex.color.g += Random::rand_range(-dt, dt);
+			vertex.color.b += Random::rand_range(-dt, dt);
+			vertex.color.a += Random::rand_range(-dt, dt);
+		}
 	}
 
 	Triangle random_triangle()
