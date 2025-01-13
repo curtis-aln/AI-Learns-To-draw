@@ -142,6 +142,8 @@
     <ClInclude Include="src\canvas.h" />
     <ClInclude Include="src\image_compiler.h" />
     <ClInclude Include="src\random.h" />
+    <ClInclude Include="src\renderer.h" />
+    <ClInclude Include="src\settings.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

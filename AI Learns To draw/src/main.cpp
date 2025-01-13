@@ -3,6 +3,8 @@
 
 #include "canvas.h"
 #include "image_compiler.h"
+#include "renderer.h"
+#include "settings.h"
 
 
 #include <vector>
@@ -10,53 +12,22 @@
 #include <iomanip>
 #include <cmath>  // For std::round
 
-struct SFML_Renderer
-{
-	static void Render(std::vector<sf::Image>& images, const size_t frames_per_second)
-	{
-		sf::RenderWindow window(sf::VideoMode(PixelMap::resolution_x, PixelMap::resolution_y), "window");
-
-		window.setFramerateLimit(frames_per_second);
-
-		for (int i = 0; i < images.size(); ++i)
-		{
-			sf::Texture texture;
-			texture.loadFromImage(images[i]);
-			sf::Sprite sprite(texture);
-
-			// Draw the frame
-			window.clear();
-			window.draw(sprite);
-			window.display();
-		}
-	}
-};
-
 
 int main()
 {
-	Random::set_seed(0);
-
-	// mutaiton paramaters
-	const float mutation_rate = 0.08f;
-	const float mutation_range = 0.08f;
-	const float creation_rate = 0.08f;
-	const float destruction_rate = 0.07f;
-
 	Canvas canvas;
 	std::vector<Canvas> canvases;
 
-	const std::string save_file = "video.mp4";
-	const size_t video_length_seconds = 10;
-	const size_t frames_per_second = 60;
-	const size_t total_frames = video_length_seconds * frames_per_second;
+	canvases.resize(VideoSettings::total_frames);
 
-	canvases.resize(total_frames);
-
-	for (int frame = 0; frame < total_frames; ++frame)
+	for (int frame = 0; frame < VideoSettings::total_frames; ++frame)
 	{
 		// mutating
-		canvas.mutate_canvas(mutation_rate, mutation_range, creation_rate, destruction_rate);
+		canvas.mutate_canvas(
+			MutationSettings::mutation_rate,
+			MutationSettings::mutation_range, 
+			MutationSettings::creation_rate, 
+			MutationSettings::destruction_rate);
 
 		// saving the frame
 		canvases[frame] = canvas;
@@ -67,7 +38,7 @@ int main()
 	std::vector<sf::Image> images = ImageCompiler::compile(canvases);
 
 	std::cout << "Rendering. . .\n";
-	SFML_Renderer::Render(images, frames_per_second);
+	SFML_Renderer::Render(images, VideoSettings::frames_per_second);
 }
 
 /* Plan and Todo
