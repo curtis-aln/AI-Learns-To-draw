@@ -140,10 +140,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\canvas.h" />
+    <ClInclude Include="src\evolver.h" />
     <ClInclude Include="src\image_compiler.h" />
     <ClInclude Include="src\random.h" />
     <ClInclude Include="src\renderer.h" />
     <ClInclude Include="src\settings.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\Van-Gogh-Starry-Night-700.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

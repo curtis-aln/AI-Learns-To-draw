@@ -4,7 +4,8 @@ struct SFML_Renderer
 {
 	static void Render(std::vector<sf::Image>& images, const size_t frames_per_second)
 	{
-		sf::RenderWindow window(sf::VideoMode(PixelMap::resolution_x, PixelMap::resolution_y), "window"); //todo noframe
+		const sf::Vector2u size = images[0].getSize();
+		sf::RenderWindow window(sf::VideoMode(size.x, size.y), "window"); //todo noframe
 
 		window.setFramerateLimit(frames_per_second);
 

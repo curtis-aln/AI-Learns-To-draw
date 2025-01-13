@@ -5,13 +5,13 @@
 
 struct ImageCompiler
 {
-	static std::vector<sf::Image> compile(std::vector<Canvas>& canvases)
+	static std::vector<sf::Image> compile_all(std::vector<Canvas>& canvases)
 	{
 		const size_t size = canvases.size();
 
 		// Create an SFML RenderTexture
 		sf::RenderTexture render_texture;
-		if (!render_texture.create(PixelMap::resolution_x, PixelMap::resolution_y))
+		if (!render_texture.create(canvases[0].res_x_, canvases[0].res_y_))
 		{
 			throw std::runtime_error("Failed to create render texture");
 		}
@@ -31,11 +31,6 @@ struct ImageCompiler
 			}
 
 			images[i] = render_texture.getTexture().copyToImage();
-
-			if (i % int(size / 10) == 0)
-			{
-				std::cout << int((i * 100)/size) << "% compiled\n";
-			}
 		}
 
 		return images;

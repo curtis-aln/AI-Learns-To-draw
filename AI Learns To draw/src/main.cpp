@@ -5,6 +5,7 @@
 #include "image_compiler.h"
 #include "renderer.h"
 #include "settings.h"
+#include "evolver.h"
 
 
 #include <vector>
@@ -13,29 +14,17 @@
 #include <cmath>  // For std::round
 
 
+
 int main()
 {
-	Canvas canvas;
-	std::vector<Canvas> canvases;
-
-	canvases.resize(VideoSettings::total_frames);
-
-	for (int frame = 0; frame < VideoSettings::total_frames; ++frame)
-	{
-		// mutating
-		canvas.mutate_canvas(
-			MutationSettings::mutation_rate,
-			MutationSettings::mutation_range, 
-			MutationSettings::creation_rate, 
-			MutationSettings::destruction_rate);
-
-		// saving the frame
-		canvases[frame] = canvas;
-	}
+	Evolver evolver;
+	
+	evolver.evolve(EvolutionSettings::generations);
 
 	std::cout << "Compiling. . .\n";
 
-	std::vector<sf::Image> images = ImageCompiler::compile(canvases);
+	std::vector<Canvas> canvases = evolver.best_canvases_history;
+	std::vector<sf::Image> images = ImageCompiler::compile_all(canvases);
 
 	std::cout << "Rendering. . .\n";
 	SFML_Renderer::Render(images, VideoSettings::frames_per_second);
@@ -53,10 +42,13 @@ canvas parameters:
 
 TODO:
 [DONE] Create a canvas of random triangles
-Create a video of random triangles mutating
-Load Images and convert to suitable format
-create population and apply natural selection
-
+[DONE] Create a video of random triangles mutating
+[DONE] Load Images and convert to suitable format
+[DONE] create population and apply natural selection
+End image saves
+More intuitive training info
+improved genetic algorithm 
+fix mutation settings
 
 0.4s/10%
 */
