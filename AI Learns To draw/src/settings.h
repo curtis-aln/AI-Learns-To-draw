@@ -24,8 +24,8 @@ struct MutationSettings
 
 struct EvolutionSettings
 {
-	inline static constexpr int generations = 80;
-	inline static constexpr int population_size = 120;
+	inline static constexpr int generations = 400;
+	inline static constexpr int population_size = 20;
 };
 
 

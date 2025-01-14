@@ -17,14 +17,22 @@
 
 int main()
 {
-	Evolver evolver;
-	
-	evolver.evolve(EvolutionSettings::generations);
+	std::cout << "Evolving canvases. . .\n";
+	Evolver<EvolutionSettings::population_size, EvolutionSettings::generations> evolver;
+	evolver.evolve(true);
 
 	std::cout << "Compiling. . .\n";
 
 	std::vector<Canvas> canvases = evolver.best_canvases_history;
-	std::vector<sf::Image> images = ImageCompiler::compile_all(canvases);
+
+	std::vector<sf::Image> images;
+	images.resize(EvolutionSettings::population_size);
+	ImageCompiler::compile_all(canvases, images);
+
+	if (!images[images.size()-1].saveToFile("image.png"))
+	{
+		throw std::runtime_error("Failed to save image to file: ");
+	}
 
 	std::cout << "Rendering. . .\n";
 	SFML_Renderer::Render(images, VideoSettings::frames_per_second);
@@ -50,5 +58,15 @@ More intuitive training info
 improved genetic algorithm 
 fix mutation settings
 
-0.4s/10%
+13s
+9s
+
+
+
+Total time spent on compile_images: 9941.88 ms
+Total time spent on calculate_scores: 2687.7 ms
+Total time spent on get_best_canvas: 0.2171 ms
+Total time spent on create_next_gen: 3.4673 ms
+Average time per generation: 631.663 ms
+Average time per generation: 687.08 ms
 */

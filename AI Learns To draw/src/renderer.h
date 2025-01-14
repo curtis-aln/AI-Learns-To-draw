@@ -11,6 +11,17 @@ struct SFML_Renderer
 
 		for (int i = 0; i < images.size(); ++i)
 		{
+			sf::Event event{};
+			while (window.pollEvent(event))
+			{
+
+				if (event.type == sf::Event::Closed)
+				{
+					return;
+				}
+					
+			}
+
 			sf::Texture texture;
 			texture.loadFromImage(images[i]);
 			sf::Sprite sprite(texture);

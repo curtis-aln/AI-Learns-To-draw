@@ -38,6 +38,9 @@
     <ClInclude Include="src\evolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\thread_pool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="images\Van-Gogh-Starry-Night-700.jpg">

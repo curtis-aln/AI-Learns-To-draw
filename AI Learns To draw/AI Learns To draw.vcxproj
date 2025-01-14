@@ -145,6 +145,7 @@
     <ClInclude Include="src\random.h" />
     <ClInclude Include="src\renderer.h" />
     <ClInclude Include="src\settings.h" />
+    <ClInclude Include="src\thread_pool.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="images\Van-Gogh-Starry-Night-700.jpg" />
