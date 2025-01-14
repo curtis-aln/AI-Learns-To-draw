@@ -71,7 +71,6 @@ public:
 
         float total_compile_time = 0.f;
         float total_score_time = 0.f;
-        float total_best_canvas_time = 0.f;
         float total_next_gen_time = 0.f;
 
         // Running generations
@@ -90,10 +89,7 @@ public:
             total_score_time += std::chrono::duration<float, std::milli>(end_score - start_score).count();
 
             // Determine best canvas
-            auto start_best = std::chrono::steady_clock::now();
             get_best_canvas();
-            auto end_best = std::chrono::steady_clock::now();
-            total_best_canvas_time += std::chrono::duration<float, std::milli>(end_best - start_best).count();
 
             // Create next generation
             auto start_next_gen = std::chrono::steady_clock::now();
@@ -114,10 +110,9 @@ public:
         std::cout << "Evolve Timing Analysis:\n";
         std::cout << "Total time spent on compile_images: " << total_compile_time << " ms\n";
         std::cout << "Total time spent on calculate_scores: " << total_score_time << " ms\n";
-        std::cout << "Total time spent on get_best_canvas: " << total_best_canvas_time << " ms\n";
         std::cout << "Total time spent on create_next_gen: " << total_next_gen_time << " ms\n";
         std::cout << "Average time per generation: "
-            << (total_compile_time + total_score_time + total_best_canvas_time + total_next_gen_time) / Generations
+            << (total_compile_time + total_score_time + total_next_gen_time) / Generations
             << " ms\n";
     }
 
@@ -182,7 +177,8 @@ private:
 
     void display_stats()
     {
-        std::cout << "Generation " << current_generation << "/" << Generations << "\n";
+        const auto percentage = static_cast<int>((current_generation / Generations) * 100);
+        std::cout << "Generation " << current_generation << "/" << Generations << "(" << percentage << "%)\n";
         std::cout << "best score: " << best_score << "\n";
 
 

@@ -22,20 +22,29 @@ int main()
 	evolver.evolve(true);
 
 	std::cout << "Compiling. . .\n";
-
 	std::vector<Canvas> canvases = evolver.best_canvases_history;
 
 	std::vector<sf::Image> images;
-	images.resize(EvolutionSettings::population_size);
+	images.resize(canvases.size());
 	ImageCompiler::compile_all(canvases, images);
 
+	std::cout << "Saving\n";
 	if (!images[images.size()-1].saveToFile("image.png"))
 	{
 		throw std::runtime_error("Failed to save image to file: ");
 	}
+	std::cout << "Saved\n";
+
 
 	std::cout << "Rendering. . .\n";
-	SFML_Renderer::Render(images, VideoSettings::frames_per_second);
+	while (true)
+	{
+		bool quit = SFML_Renderer::Render(images, VideoSettings::frames_per_second);
+		if (quit)
+		{
+			break;
+		}
+	}
 }
 
 /* Plan and Todo

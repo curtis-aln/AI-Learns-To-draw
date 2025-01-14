@@ -2,7 +2,7 @@
 
 struct SFML_Renderer
 {
-	static void Render(std::vector<sf::Image>& images, const size_t frames_per_second)
+	static bool Render(std::vector<sf::Image>& images, const size_t frames_per_second)
 	{
 		const sf::Vector2u size = images[0].getSize();
 		sf::RenderWindow window(sf::VideoMode(size.x, size.y), "window"); //todo noframe
@@ -17,7 +17,7 @@ struct SFML_Renderer
 
 				if (event.type == sf::Event::Closed)
 				{
-					return;
+					return true;
 				}
 					
 			}
@@ -31,5 +31,6 @@ struct SFML_Renderer
 			window.draw(sprite);
 			window.display();
 		}
+		return false;
 	}
 };
