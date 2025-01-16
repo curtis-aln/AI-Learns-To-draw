@@ -97,6 +97,7 @@ private:
 		}
 	}
 
+
 	void add_random_triangle()
 	{
 		// assume canvas space is (0, 0, 1, 1) (x, y, w, h)

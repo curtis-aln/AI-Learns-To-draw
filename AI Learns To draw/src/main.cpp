@@ -9,9 +9,7 @@
 
 
 #include <vector>
-#include <string>
-#include <iomanip>
-#include <cmath>  // For std::round
+
 
 
 
@@ -22,7 +20,7 @@ int main()
 	Evolver<EvolutionSettings::population_size, EvolutionSettings::generations> evolver;
 	
 	const sf::Vector2u size = evolver.reference_image.getSize();
-	sf::RenderWindow window(sf::VideoMode(size.x, size.y), "window"); //todo noframe
+	sf::RenderWindow window(sf::VideoMode(size.x, size.y), "window", sf::Style::None); //todo noframe
 
 	std::cout << "Evolving canvases. . .\n";
 	evolver.evolve(true);
@@ -45,7 +43,7 @@ int main()
 	std::cout << "Rendering. . .\n";
 	while (true)
 	{
-		bool quit = SFML_Renderer::Render(images, VideoSettings::frames_per_second, window);
+		const bool quit = SFML_Renderer::Render(images, VideoSettings::frames_per_second, window);
 		if (quit)
 		{
 			break;
@@ -68,9 +66,12 @@ canvas parameters:
 - learn if there are any alternatives for multithreading the image compiler renderTextures
 
 [Functionality]
+- add a frame number in the top corner of the display screen
 
 [Improvements]
 - triangles spawn mostly transparent and spawn within a smaller rect instead of taking up the whole screen
+- ability for solid color triangles
+- ability for no transparency colors
 
 [Bug Fixes]
 */
