@@ -14,15 +14,17 @@ class Canvas : CanvasSettings, MutationSettings
 
 
 public:
-	float res_x_;
-	float res_y_;
+	// image dimensions
+	float resolution_x_;
+	float resolution_y_;
 
 
-	Canvas(float res_x = 0, float res_y = 0)
+	Canvas(const float resolution_x = 0, const float resolution_y = 0)
 	{
-		res_x_ = res_x;
-		res_y_ = res_y;
+		resolution_x_ = resolution_x;
+		resolution_y_ = resolution_y;
 
+		// initializing the triangle vertex array
 		triangles_.setPrimitiveType(sf::Triangles);
 
 		// creating many triangles
@@ -38,7 +40,7 @@ public:
 		return triangles_;
 	}
 
-	void set_canvas(Canvas& reference)
+	void set_canvas(const Canvas& reference)
 	{
 		triangles_ = reference.triangles_;
 	}
@@ -98,15 +100,23 @@ private:
 	void add_random_triangle()
 	{
 		// assume canvas space is (0, 0, 1, 1) (x, y, w, h)
-		int starting_index = triangles_.getVertexCount();
+		// triangles are generated mostly transparent and within a small area
 
+		// generating the triangle bounds
+		const float size = Random::rand_range(70.f, 500.f); // todo make float
+		const sf::FloatRect shrunk_rect = { size, size, resolution_x_ - size * 2, resolution_y_ - size * 2 };
+		const sf::Vector2f pos = Random::rand_pos_in_rect(shrunk_rect);
+		const sf::FloatRect triangle_bounds = { pos.x, pos.y, size, size };
+
+		// for each vertex
 		for (int i = 0; i < 3; ++i)
 		{
 			sf::Vertex vertex;
 
-			sf::FloatRect rect = { 0.f, 0.f, float(res_x_), float(res_y_) };
-			vertex.position = Random::rand_pos_in_rect(rect);
+			sf::FloatRect rect = { 0.f, 0.f, float(resolution_x_), float(resolution_y_) };
+			vertex.position = Random::rand_pos_in_rect(triangle_bounds);
 			vertex.color = Random::rand_color();
+			vertex.color.a = Random::rand_range(5, 30); // initial low alpha color
 
 			triangles_.append(vertex);
 		}
@@ -115,6 +125,7 @@ private:
 
 	void remove_triangle(const size_t triangle_index)
 	{
+		if (triangles_.getVertexCount() < 6) return;
 		// Each triangle is represented by 3 vertices, so find the start index of the triangle
 		const size_t start_index = triangle_index * 3;
 		const size_t end = triangles_.getVertexCount() - 1;

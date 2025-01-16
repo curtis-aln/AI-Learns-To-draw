@@ -17,8 +17,14 @@
 
 int main()
 {
-	std::cout << "Evolving canvases. . .\n";
+	Random::set_seed(0);
+
 	Evolver<EvolutionSettings::population_size, EvolutionSettings::generations> evolver;
+	
+	const sf::Vector2u size = evolver.reference_image.getSize();
+	sf::RenderWindow window(sf::VideoMode(size.x, size.y), "window"); //todo noframe
+
+	std::cout << "Evolving canvases. . .\n";
 	evolver.evolve(true);
 
 	std::cout << "Compiling. . .\n";
@@ -26,7 +32,7 @@ int main()
 
 	std::vector<sf::Image> images;
 	images.resize(canvases.size());
-	ImageCompiler::compile_all(canvases, images);
+	ImageCompiler::compile_all(canvases, images, evolver.thread_pool);
 
 	std::cout << "Saving\n";
 	if (!images[images.size()-1].saveToFile("image.png"))
@@ -39,7 +45,7 @@ int main()
 	std::cout << "Rendering. . .\n";
 	while (true)
 	{
-		bool quit = SFML_Renderer::Render(images, VideoSettings::frames_per_second);
+		bool quit = SFML_Renderer::Render(images, VideoSettings::frames_per_second, window);
 		if (quit)
 		{
 			break;
@@ -57,25 +63,14 @@ canvas parameters:
 - A canvas can have as many triangles as it wants
 
 
-TODO:
-[DONE] Create a canvas of random triangles
-[DONE] Create a video of random triangles mutating
-[DONE] Load Images and convert to suitable format
-[DONE] create population and apply natural selection
-End image saves
-More intuitive training info
-improved genetic algorithm 
-fix mutation settings
+------ TODO ------
+[Optimization]
+- learn if there are any alternatives for multithreading the image compiler renderTextures
 
-13s
-9s
+[Functionality]
 
+[Improvements]
+- triangles spawn mostly transparent and spawn within a smaller rect instead of taking up the whole screen
 
-
-Total time spent on compile_images: 9941.88 ms
-Total time spent on calculate_scores: 2687.7 ms
-Total time spent on get_best_canvas: 0.2171 ms
-Total time spent on create_next_gen: 3.4673 ms
-Average time per generation: 631.663 ms
-Average time per generation: 687.08 ms
+[Bug Fixes]
 */
